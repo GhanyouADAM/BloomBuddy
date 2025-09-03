@@ -27,7 +27,6 @@ class LikedPlantItem extends ConsumerWidget {
     return InkWell(
       onTap: () => _goToDetails(context),
       child: Card(
-        margin: EdgeInsets.only(bottom: 310),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         elevation: 6,
         clipBehavior: Clip.hardEdge,

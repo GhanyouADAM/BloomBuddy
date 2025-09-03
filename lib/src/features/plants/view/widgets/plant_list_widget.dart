@@ -75,15 +75,19 @@ class PlantListWidget extends ConsumerWidget {
               );
             },
           )
-        : ListView.builder(
-            itemCount: plants.length,
+        : GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.8,
+              crossAxisSpacing: 4,
+              mainAxisSpacing: 4,
+            ),
             scrollDirection: Axis.horizontal,
+            shrinkWrap: true,
+            itemCount: plants.length,
             itemBuilder: (context, index) {
               final plant = plants[index];
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: LikedPlantItem(plant: plant),
-              );
+              return LikedPlantItem(plant: plant);
             },
           );
   }
