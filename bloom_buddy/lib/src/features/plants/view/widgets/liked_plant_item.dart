@@ -35,7 +35,10 @@ class LikedPlantItem extends ConsumerWidget {
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.white, Colors.green.shade50.withOpacity(0.3)],
+              colors: [
+                Colors.white,
+                Colors.green.shade50.withValues(alpha: 0.3),
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),

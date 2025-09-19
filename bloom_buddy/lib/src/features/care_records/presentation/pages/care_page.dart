@@ -1,6 +1,9 @@
 import 'package:bloom_buddy/src/core/async_widget.dart';
+import 'package:bloom_buddy/src/core/loading_widget.dart';
+import 'package:bloom_buddy/src/core/notification_service.dart';
 import 'package:bloom_buddy/src/core/theme/app_borders.dart';
 import 'package:bloom_buddy/src/core/theme/app_spacing.dart';
+import 'package:bloom_buddy/src/features/care_records/domain/entities/care_requirements.dart';
 import 'package:bloom_buddy/src/features/care_records/presentation/controller/providers.dart';
 import 'package:bloom_buddy/src/features/plants/view/controllers/plant_controller.dart';
 import 'package:flutter/material.dart';
@@ -15,17 +18,55 @@ class CarePage extends ConsumerStatefulWidget {
 }
 
 class _CarePageState extends ConsumerState<CarePage> {
+  dynamic _processingCareId;
+  final NotificationService notificationService = NotificationService();
+  void newCareRecord(CareRequirements careRequirement) async {
+    try {
+      setState(() {
+        _processingCareId = careRequirement.careId;
+      });
+      //Ajoute avant tout un record pour l'action de soin effectué
+      await ref
+          .read(supabaseCareRequirementsRepositoryProvider)
+          .registerCareRecord(careRequirement.careId);
+
+      //annule la notification créée a la acreation de la condition de soins
+      await notificationService.cancelNotification(careRequirement.careId);
+
+      //et enfin programme la prochaine notification pour la même durée
+      await notificationService.advancedScheduledNotifications(
+        careId: careRequirement.careId,
+        title: 'Nouveau rappel pour ${careRequirement.careType} ',
+        body: 'Votre prochain soin est ${careRequirement.careFrequency} jours',
+        interval: careRequirement.careFrequency,
+      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Confirmation du soin enregistré avec succès !'),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erreur lors de la confirmation : $e')),
+        );
+      }
+    } finally {
+      setState(() {
+        _processingCareId = null;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final asyncPlants = ref.watch(plantStreamProvider);
     final selectedPlant = ref.watch(selectedPlantProvider);
-    if (selectedPlant != null) {
-      final asyncCareRequirements = ref.watch(
-        careRequirementsStreamProvider(selectedPlant.plantId),
-      );
-    } else {
-      final asyncCareRequirements = null;
-    }
+    final asyncCareRequirements = selectedPlant != null
+        ? ref.watch(careRequirementsStreamProvider(selectedPlant.plantId))
+        : null;
     return Scaffold(
       appBar: AppBar(title: Text('Soins')),
       body: Column(
@@ -101,7 +142,33 @@ class _CarePageState extends ConsumerState<CarePage> {
                 topRight: Radius.circular(AppBorders.radiusMedium),
               ),
             ),
-            child: Wrap(),
+            //Le contenu du container bas affiche la liste des boutons si une plante est selectionnée
+            child: selectedPlant != null
+                ? AsyncValueWidget(
+                    value: asyncCareRequirements!,
+                    data: (data) {
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          final careRequirement = data[index];
+                          final isThisOneLoading =
+                              _processingCareId == careRequirement.careId;
+                          return ElevatedButton(
+                            onPressed: _processingCareId! - null
+                                ? null
+                                : () {
+                                    newCareRecord(careRequirement);
+                                  },
+                            child: isThisOneLoading
+                                ? LoadingWidget()
+                                : Text(careRequirement.careType),
+                          );
+                        },
+                      );
+                    },
+                  )
+                : Center(child: Text('Choisir une plante')),
           ),
         ],
       ),

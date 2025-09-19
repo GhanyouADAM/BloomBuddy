@@ -123,9 +123,7 @@ class NotificationService {
   }) async {
     final tz.TZDateTime scheduledDate = tz.TZDateTime.now(
       tz.local,
-    ).add(Duration(days: interval));
-    // debugPrint("Entrée dans la methode");
-    // debugPrint('Scheduling notification: $careId, $title, $body, $interval');
+    ).add(Duration(seconds: interval));
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       careId.hashCode,
