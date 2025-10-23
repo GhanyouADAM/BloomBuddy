@@ -22,6 +22,8 @@ class PlantListWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return !isLikePlant
         ? ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
             itemCount: plants.length,
             itemBuilder: (context, index) {
               final plant = plants[index];

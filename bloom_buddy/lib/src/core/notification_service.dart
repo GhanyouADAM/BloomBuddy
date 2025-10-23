@@ -17,7 +17,7 @@ class NotificationService {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation(timeZoneName));
     const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings('@mipmap/launcher_icon');
 
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
@@ -62,7 +62,7 @@ class NotificationService {
           channelDescription: "Canal pour les notifications immediates",
           importance: Importance.high,
           priority: Priority.high,
-          icon: '@mipmap/ic_launcher',
+          icon: '@mipmap/launcher_icon',
         );
 
     const NotificationDetails notificationDetails = NotificationDetails(
@@ -123,7 +123,7 @@ class NotificationService {
   }) async {
     final tz.TZDateTime scheduledDate = tz.TZDateTime.now(
       tz.local,
-    ).add(Duration(seconds: interval));
+    ).add(Duration(days: interval));
 
     await flutterLocalNotificationsPlugin.zonedSchedule(
       careId.hashCode,
@@ -137,11 +137,10 @@ class NotificationService {
           channelDescription: 'Canal pour les rappels de soins des plantes.',
           importance: Importance.max,
           priority: Priority.high,
-          icon: '@mipmap/ic_launcher',
+          icon: '@mipmap/launcher_icon',
         ),
       ),
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 }

@@ -82,16 +82,19 @@ class _CareRequirementsFormState extends ConsumerState<CareRequirementsForm> {
 
     try {
       if (!widget.isUpdating) {
+        debugPrint("Avant createCareRequirements");
         final careRequirement = await ref
             .read(supabaseCareRequirementsRepositoryProvider)
             .createCareRequirements(
               widget.plant.plantId,
               _careTypeController.text.trim(),
               careFrequency,
+              status: 'Scheduled',
+              lastCareDate: DateTime.now(),
+              nextCareDate: DateTime.now().add(Duration(days: careFrequency)),
             );
-        debugPrint('careRequirement: $careRequirement');
+
         try {
-          debugPrint('Appel advancedScheduledNotifications'); // Ajout ici
           await notificationService.advancedScheduledNotifications(
             careId: careRequirement.careId,
             title: "Rappel de soins pour ${widget.plant.plantName} ",

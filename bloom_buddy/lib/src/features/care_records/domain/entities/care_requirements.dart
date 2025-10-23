@@ -8,6 +8,9 @@ class CareRequirements with CareRequirementsMappable {
   String plantId;
   String careType;
   int careFrequency;
+  String status;
+  DateTime? lastCareDate;
+  DateTime? nextCareDate;
   DateTime? createdAt;
   DateTime? updatedAt;
 
@@ -16,6 +19,9 @@ class CareRequirements with CareRequirementsMappable {
     required this.plantId,
     required this.careType,
     required this.careFrequency,
+    required this.status,
+    required this.lastCareDate,
+    required this.nextCareDate,
     required this.createdAt,
     required this.updatedAt,
   });

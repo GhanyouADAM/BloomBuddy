@@ -21,7 +21,7 @@ class AsyncValueWidget<T> extends StatelessWidget {
     return value.when(
       data: data,
       loading: () => loading ?? const LoadingWidget(),
-      error: (e, _) => error ?? Text('Erreur'),
+      error: (e, _) => error ?? Text('Erreur: $e'),
     );
   }
 }

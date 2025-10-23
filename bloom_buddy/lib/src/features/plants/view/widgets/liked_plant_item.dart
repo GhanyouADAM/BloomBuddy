@@ -70,7 +70,9 @@ class LikedPlantItem extends ConsumerWidget {
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.green.shade100.withOpacity(0.6),
+                                color: Colors.green.shade100.withValues(
+                                  alpha: 0.6,
+                                ),
                                 blurRadius: 8,
                                 offset: Offset(0, 4),
                               ),

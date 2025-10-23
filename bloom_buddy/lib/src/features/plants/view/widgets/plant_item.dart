@@ -40,7 +40,7 @@ class PlantItem extends ConsumerWidget {
       shape: RoundedRectangleBorder(borderRadius: AppBorders.circularMedium),
       child: InkWell(
         borderRadius: AppBorders.circularMedium,
-        onTap: () => _goToDetails(context),
+        onTap: () => _openEditForm(context),
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
           child: Row(
@@ -99,8 +99,8 @@ class PlantItem extends ConsumerWidget {
                   foregroundColor: Colors.green.shade700,
                 ),
                 icon: const Icon(Icons.edit_outlined),
-                label: const Text("Modifier"),
-                onPressed: () => _openEditForm(context),
+                label: const Text("Details"),
+                onPressed: () => _goToDetails(context),
               ),
             ],
           ),

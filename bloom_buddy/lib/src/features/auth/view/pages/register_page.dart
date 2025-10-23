@@ -85,7 +85,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       appBar: AppBar(backgroundColor: Colors.white),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.sm),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
@@ -97,6 +97,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                   color: Colors.black54,
                   fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 7),
               Text(
@@ -106,11 +107,96 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                 ).textTheme.bodyLarge!.copyWith(color: Colors.black54),
               ),
               SizedBox(height: AppSpacing.lg),
-              Row(
-                children: [
-                  Flexible(
-                    flex: 1,
-                    child: Container(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Flexible(
+                          flex: 1,
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: AppBorders.circularSmall,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      spreadRadius: 3 / 2,
+                                      offset: Offset(0, 3 / 2),
+                                      color: Colors.grey.shade300,
+                                    ),
+                                  ],
+                                ),
+                                child: TextField(
+                                  controller: _firstNameController,
+                                  keyboardType: TextInputType.name,
+                                  decoration: InputDecoration(
+                                    hintText: 'Prénom',
+                                    hintStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!
+                                        .copyWith(color: Colors.grey.shade400),
+                                    prefixIcon: Icon(Icons.person),
+                                    prefixIconColor: Colors.green,
+                                    border: OutlineInputBorder(
+                                      borderRadius: AppBorders.circularSmall,
+                                      borderSide: BorderSide.none,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: AppSpacing.sm),
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: AppBorders.circularSmall,
+                              boxShadow: [
+                                BoxShadow(
+                                  spreadRadius: 3 / 2,
+                                  offset: Offset(0, 3 / 2),
+                                  color: Colors.grey.shade300,
+                                ),
+                              ],
+                            ),
+                            child: TextField(
+                              controller: _lastNameController,
+                              keyboardType: TextInputType.name,
+                              decoration: InputDecoration(
+                                hintText: 'Nom',
+                                hintStyle: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium!
+                                    .copyWith(color: Colors.grey.shade400),
+                                prefixIcon: Icon(Icons.person),
+                                prefixIconColor: Colors.green,
+                                border: OutlineInputBorder(
+                                  borderRadius: AppBorders.circularSmall,
+                                  borderSide: BorderSide.none,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 18),
+                    Text(
+                      'Adresse mail',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: AppBorders.circularSmall,
@@ -123,13 +209,13 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         ],
                       ),
                       child: TextField(
-                        controller: _firstNameController,
-                        keyboardType: TextInputType.name,
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
-                          hintText: 'Prénom',
+                          hintText: 'Saisissez votre adresse mail',
                           hintStyle: Theme.of(context).textTheme.bodyMedium!
                               .copyWith(color: Colors.grey.shade400),
-                          prefixIcon: Icon(Icons.person),
+                          prefixIcon: Icon(Icons.mail),
                           prefixIconColor: Colors.green,
                           border: OutlineInputBorder(
                             borderRadius: AppBorders.circularSmall,
@@ -138,11 +224,16 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: AppSpacing.sm),
-                  Flexible(
-                    flex: 1,
-                    child: Container(
+                    SizedBox(height: 18),
+                    Text(
+                      'Mot de passe',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: AppBorders.circularSmall,
@@ -155,152 +246,105 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                         ],
                       ),
                       child: TextField(
-                        controller: _lastNameController,
-                        keyboardType: TextInputType.name,
+                        controller: _passwordController,
+                        obscureText: _isObscure,
                         decoration: InputDecoration(
-                          hintText: 'Nom',
                           hintStyle: Theme.of(context).textTheme.bodyMedium!
                               .copyWith(color: Colors.grey.shade400),
-                          prefixIcon: Icon(Icons.person),
-                          prefixIconColor: Colors.green,
+                          hintText: 'Saisissez votre mot de passe',
                           border: OutlineInputBorder(
-                            borderRadius: AppBorders.circularSmall,
                             borderSide: BorderSide.none,
+                          ),
+                          prefixIcon: Icon(Icons.lock),
+                          prefixIconColor: Colors.green,
+                          suffixIconColor: Colors.green,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
+                            },
+                            icon: Icon(
+                              _isObscure
+                                  ? Icons.remove_red_eye_sharp
+                                  : Icons.panorama_fish_eye_sharp,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: AppSpacing.md),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: AppBorders.circularSmall,
-                  boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 3 / 2,
-                      offset: Offset(0, 3 / 2),
-                      color: Colors.grey.shade300,
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: 'Mail',
-                    hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.grey.shade400,
-                    ),
-                    prefixIcon: Icon(Icons.mail),
-                    prefixIconColor: Colors.green,
-                    border: OutlineInputBorder(
-                      borderRadius: AppBorders.circularSmall,
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: AppSpacing.md),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: AppBorders.circularSmall,
-                  boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 3 / 2,
-                      offset: Offset(0, 3 / 2),
-                      color: Colors.grey.shade300,
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  controller: _passwordController,
-                  obscureText: _isObscure,
-                  decoration: InputDecoration(
-                    hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.grey.shade400,
-                    ),
-                    hintText: 'Mot de passe',
-                    border: OutlineInputBorder(borderSide: BorderSide.none),
-                    prefixIcon: Icon(Icons.lock),
-                    prefixIconColor: Colors.green,
-                    suffixIconColor: Colors.green,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isObscure = !_isObscure;
-                        });
-                      },
-                      icon: Icon(
-                        _isObscure
-                            ? Icons.remove_red_eye_sharp
-                            : Icons.panorama_fish_eye_sharp,
+                    SizedBox(height: 18),
+                    Text(
+                      'Confirmer Mot de passe',
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(height: AppSpacing.md),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: AppBorders.circularSmall,
-                  boxShadow: [
-                    BoxShadow(
-                      spreadRadius: 3 / 2,
-                      offset: Offset(0, 3 / 2),
-                      color: Colors.grey.shade300,
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  controller: _confirmPasswordController,
-                  obscureText: _isObscure,
-                  decoration: InputDecoration(
-                    hintStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Colors.grey.shade400,
-                    ),
-                    hintText: ' Confirmer Mot de passe',
-                    border: OutlineInputBorder(borderSide: BorderSide.none),
-                    prefixIcon: Icon(Icons.lock),
-                    prefixIconColor: Colors.green,
-                    suffixIconColor: Colors.green,
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _isObscure = !_isObscure;
-                        });
-                      },
-                      icon: Icon(
-                        _isObscure
-                            ? Icons.remove_red_eye_sharp
-                            : Icons.panorama_fish_eye_sharp,
+                    SizedBox(height: 8),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: AppBorders.circularSmall,
+                        boxShadow: [
+                          BoxShadow(
+                            spreadRadius: 3 / 2,
+                            offset: Offset(0, 3 / 2),
+                            color: Colors.grey.shade300,
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        controller: _confirmPasswordController,
+                        obscureText: _isObscure,
+                        decoration: InputDecoration(
+                          hintStyle: Theme.of(context).textTheme.bodyMedium!
+                              .copyWith(color: Colors.grey.shade400),
+                          hintText: ' Saisisser a nouveau le Mot de passe',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                          ),
+                          prefixIcon: Icon(Icons.lock),
+                          prefixIconColor: Colors.green,
+                          suffixIconColor: Colors.green,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                _isObscure = !_isObscure;
+                              });
+                            },
+                            icon: Icon(
+                              _isObscure
+                                  ? Icons.remove_red_eye_sharp
+                                  : Icons.panorama_fish_eye_sharp,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(height: AppSpacing.xxl),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 7,
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
-                    padding: EdgeInsets.symmetric(vertical: AppSpacing.md),
-                    // shape: RoundedRectangleBorder(
-                    //   borderRadius: BorderRadiusGeometry.circular(8),
-                    //   side: BorderSide(color: Colors.grey.shade100),
-                    // ),
-                  ),
-                  onPressed: _isLoading ? null : _signIn,
-                  child: _isLoading
-                      ? Center(child: LoadingWidget())
-                      : Text('S\'inscrire'),
+                    SizedBox(height: AppSpacing.xxl),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 7,
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            vertical: AppSpacing.md,
+                          ),
+                          // shape: RoundedRectangleBorder(
+                          //   borderRadius: BorderRadiusGeometry.circular(8),
+                          //   side: BorderSide(color: Colors.grey.shade100),
+                          // ),
+                        ),
+                        onPressed: _isLoading ? null : _signIn,
+                        child: _isLoading
+                            ? Center(child: LoadingWidget())
+                            : Text('S\'inscrire'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

@@ -1,7 +1,7 @@
 name: bloom_buddy
 description: "A mobile plant care app."
 publish_to: "none"
-version: 0.1.0
+version: 1.1.0+1
 
 environment:
   sdk: ^3.8.1
@@ -24,14 +24,30 @@ dependencies:
   timezone: ^0.10.0
   flutter_timezone: ^4.1.1
   toastification: ^3.0.3
+
+
   # flutter_native_timezone: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
   build_runner: ^2.4.2
   dart_mappable_builder: ^4.5.0
+
+flutter_launcher_icons:
+  android: 'launcher_icon'
+  image_path: "assets/icons/bloom_buddy_icon.png"
+  min_sdk_android: 21
+
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/icons/bloom_buddy_icon.png
+  android_12:
+    color: "#FFFFFF"
+    image: assets/icons/bloom_buddy_icon.png
 
 flutter:
   uses-material-design: true

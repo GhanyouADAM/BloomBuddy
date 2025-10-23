@@ -6,8 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-// Supprimez cette ligne : final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
 const String supabaseUrl = 'https://kfbegmyrdpzwqykppkcn.supabase.co';
 const String supabaseAnonKey =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtmYmVnbXlyZHB6d3F5a3Bwa2NuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMyMTEzMzYsImV4cCI6MjA2ODc4NzMzNn0.oco51KkflnrJnF5nsUP72E3DeJBHjf3fm-vXJyir7SE";
@@ -32,7 +30,7 @@ class MainApp extends ConsumerWidget {
       routerConfig: router,
       debugShowCheckedModeBanner: false,
       theme: ThemeData().copyWith(textTheme: GoogleFonts.poppinsTextTheme()),
-      title: 'Bloom budy',
+      title: 'Bloom buddy',
     );
   }
 }

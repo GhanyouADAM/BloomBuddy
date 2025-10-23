@@ -20,3 +20,14 @@ final careRequirementsStreamProvider = StreamProvider.family
     });
 
 final selectedPlantProvider = StateProvider<Plant?>((ref) => null);
+
+final careRequirementsStreamFilter = StateProvider<String>(
+  (ref) => 'Scheduled',
+);
+
+final careRequirementsByStatusStreamProvider = StreamProvider.family
+    .autoDispose<List<CareRequirements>, String>((ref, plantId) {
+      final status = ref.watch(careRequirementsStreamFilter);
+      final repository = ref.watch(supabaseCareRequirementsRepositoryProvider);
+      return repository.watchCareRequirementsByStatus(plantId, status);
+    });

@@ -32,18 +32,20 @@ class _PlantDetailsPageState extends ConsumerState<PlantDetailsPage> {
       setState(() {
         widget.plant.isLiked = !widget.plant.isLiked;
       });
-      toastification.show(
-        context: context,
-        style: ToastificationStyle.flat,
-        closeOnClick: true,
-        autoCloseDuration: Duration(seconds: 3),
-        // icon: Icon(Icons.info),
-        title: Text(
-          widget.plant.isLiked
-              ? "${widget.plant.plantName} ajoutée aux favoris"
-              : "${widget.plant.plantName} retirée des favoris",
-        ),
-      );
+      if (mounted) {
+        toastification.show(
+          context: context,
+          style: ToastificationStyle.flat,
+          closeOnClick: true,
+          autoCloseDuration: Duration(seconds: 3),
+          // icon: Icon(Icons.info),
+          title: Text(
+            widget.plant.isLiked
+                ? "${widget.plant.plantName} ajoutée aux favoris"
+                : "${widget.plant.plantName} retirée des favoris",
+          ),
+        );
+      }
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(
       //     duration: Duration(milliseconds: 1000),

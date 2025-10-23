@@ -6,11 +6,11 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '../features/auth/view/controller/auth_controller.dart';
-import '../features/care_records/presentation/pages/care_page.dart';
-import '../features/plants/view/pages/favourite_page.dart';
 import '../features/auth/view/pages/login_page.dart';
 import '../features/auth/view/pages/register_page.dart';
-import '../features/auth/view/pages/settings.dart';
+// import '../features/auth/view/pages/settings.dart';
+import '../features/care_records/presentation/pages/care_page.dart';
+import '../features/plants/view/pages/favourite_page.dart';
 import '../features/plants/view/pages/home_page.dart';
 
 // GlobalKeys statiques pour éviter les duplications
@@ -23,8 +23,8 @@ final GlobalKey<NavigatorState> _shellCareNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'care');
 final GlobalKey<NavigatorState> _shellFavouriteNavigatorKey =
     GlobalKey<NavigatorState>(debugLabel: 'favourite');
-final GlobalKey<NavigatorState> _shellSettingsNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'settings');
+// final GlobalKey<NavigatorState> _shellSettingsNavigatorKey =
+//     GlobalKey<NavigatorState>(debugLabel: 'settings');
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authStateChanges = ref.watch(authStateChangesProvider);
@@ -95,16 +95,16 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
 
-          // ------- settings -------
-          StatefulShellBranch(
-            navigatorKey: _shellSettingsNavigatorKey,
-            routes: [
-              GoRoute(
-                path: '/settings',
-                builder: (context, state) => const Settings(),
-              ),
-            ],
-          ),
+          // // ------- settings -------
+          // StatefulShellBranch(
+          //   navigatorKey: _shellSettingsNavigatorKey,
+          //   routes: [
+          //     GoRoute(
+          //       path: '/settings',
+          //       builder: (context, state) => const Settings(),
+          //     ),
+          //   ],
+          // ),
         ],
       ),
     ],
@@ -141,6 +141,7 @@ class _ScreenMolderState extends State<ScreenMolder> {
         .fadeIn(duration: 500.ms);
 
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       body: AnimatedSwitcher(
         duration: 400.ms,
         transitionBuilder: (Widget child, Animation<double> animation) {
@@ -150,6 +151,8 @@ class _ScreenMolderState extends State<ScreenMolder> {
         child: child,
       ),
       bottomNavigationBar: GNav(
+        activeColor: Colors.green,
+
         selectedIndex: currentIndex,
         onTabChange: (value) {
           setState(() {
@@ -176,11 +179,11 @@ class _ScreenMolderState extends State<ScreenMolder> {
             text: "favoris",
             textStyle: Theme.of(context).textTheme.bodyMedium,
           ),
-          GButton(
-            icon: LineIcons.user,
-            text: 'Profile',
-            textStyle: Theme.of(context).textTheme.bodyMedium,
-          ),
+          // GButton(
+          //   icon: LineIcons.user,
+          //   text: 'Profile',
+          //   textStyle: Theme.of(context).textTheme.bodyMedium,
+          // ),
         ],
       ),
     );

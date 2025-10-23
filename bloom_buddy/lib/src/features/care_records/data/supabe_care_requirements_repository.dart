@@ -12,8 +12,11 @@ class SupabaseCareRequirementsRepsoitory implements CareRequirementsRepository {
   Future<CareRequirements> createCareRequirements(
     String plantId,
     String careType,
-    int careFrequency,
-  ) async {
+    int careFrequency, {
+    String status = "Scheduled",
+    DateTime? lastCareDate,
+    DateTime? nextCareDate,
+  }) async {
     final user = _client.auth.currentUser;
     final map = await _client
         .from("plants")
@@ -28,6 +31,9 @@ class SupabaseCareRequirementsRepsoitory implements CareRequirementsRepository {
           "plant_id": plantId,
           "care_type": careType,
           "care_frequency": careFrequency,
+          "status": status,
+          "last_care_date": lastCareDate?.toIso8601String(),
+          "next_care_date": nextCareDate?.toIso8601String(),
         })
         .select()
         .single();
@@ -116,5 +122,50 @@ class SupabaseCareRequirementsRepsoitory implements CareRequirementsRepository {
     return stream.map(
       (states) => states.map((map) => CareRecordMapper.fromMap(map)).toList(),
     );
+  }
+
+  @override
+  Stream<List<CareRequirements>> watchCareRequirementsByStatus(
+    String plantId,
+    String status,
+  ) {
+    final stream = _client
+        .from('care_requirements')
+        .stream(primaryKey: ["care_id"])
+        .eq("plant_id", plantId)
+        .order("created_at");
+    return stream.map((rows) {
+      final cares = rows
+          .map((row) => CareRequirementsMapper.fromMap(row))
+          .toList();
+      final now = DateTime.now();
+      Iterable<CareRequirements> filteredList;
+      switch (status) {
+        case 'Scheduled':
+          filteredList = cares.where(
+            (care) =>
+                care.nextCareDate == null || care.nextCareDate!.isAfter(now),
+          );
+          break;
+        case 'due':
+          filteredList = cares.where(
+            (care) =>
+                care.nextCareDate != null &&
+                care.nextCareDate!.day == now.day &&
+                care.nextCareDate!.month == now.month &&
+                care.nextCareDate!.year == now.year,
+          );
+          break;
+        case 'late':
+          filteredList = cares.where(
+            (care) =>
+                care.nextCareDate != null && care.nextCareDate!.isBefore(now),
+          );
+          break;
+        default:
+          filteredList = cares;
+      }
+      return filteredList.map((c) => c.copyWith(status: status)).toList();
+    });
   }
 }
