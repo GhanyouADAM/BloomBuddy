@@ -126,7 +126,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               showAboutDialog(
                 context: context,
                 applicationName: 'Bloom Buddy',
-                applicationVersion: '1.0.0',
+                applicationVersion: '1.1.0',
 
                 applicationIcon: Icon(Icons.local_florist),
                 applicationLegalese:
