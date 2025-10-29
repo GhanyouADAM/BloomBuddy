@@ -33,6 +33,7 @@ migrate_working_dir/
 .pub/
 /build/
 /android/key.properties
+/lib/src/core/supabase_credentials.dart
 
 
 # Symbolication related
